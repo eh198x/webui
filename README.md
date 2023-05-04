@@ -1,8 +1,8 @@
 # Full-stack Go
 
-WebUI [WebUI Logo](https://path-to-logo/logo.png). It's a full-stack Go web application called "WebUI" that lets users to upload files over https.
+WebUI. It's a full-stack Go web application called "WebUI" that lets users to upload files over https.
 
-<img width="500" src="./webui.png" />
+<img width="500" src="./logo.png" />
 
 ### Features
 
