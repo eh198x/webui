@@ -114,7 +114,7 @@ func (m *UserModel) UserChangePassword(id int, currentPassword, newPassword stri
 	if err != nil {
 		return err
 	}
-	stmt = `UPDATE webui.users SET hashed_password = $1 WHERE id = $2`
+	stmt = `UPDATE users SET hashed_password = $1 WHERE id = $2`
 	_, err = m.DB.Exec(stmt, string(newHashedPassword), id)
 	return err
 }

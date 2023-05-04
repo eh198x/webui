@@ -25,7 +25,7 @@ func (m *SnippetModel) Insert(title, content, expires string) (int, error) {
 
 	expires = time.Now().AddDate(0, 0, days).Format(time.RFC3339)
 
-	stmt := `INSERT INTO snippets (title, content, created, expires) VALUES
+	stmt := `INSERT INTO webui.snippets (title, content, created, expires) VALUES
 	($1, $2, now(), $3)
 	RETURNING ID`
 
@@ -68,7 +68,7 @@ func (m *SnippetModel) Get(id int) (*models.Snippet, error) {
 	// Write the SQL statement we want to execute. Again, I've split it over two
 	// lines for readability.
 	stmt := `SELECT id, title, content, created, expires 
-			 FROM snippets
+			 FROM webui.snippets
 			 WHERE expires > NOW() AND id = $1`
 
 	s := &models.Snippet{}
@@ -95,7 +95,7 @@ func (m *SnippetModel) Get(id int) (*models.Snippet, error) {
 func (m *SnippetModel) Latest() ([]*models.Snippet, error) {
 	// Write the SQL statement we want to execute.
 	stmt := `SELECT id, title, content, created, expires 
-			 FROM snippets
+			 FROM webui.snippets
 			 WHERE expires > NOW() 
 			 ORDER BY created DESC LIMIT 10`
 

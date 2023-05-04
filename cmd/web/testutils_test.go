@@ -9,9 +9,9 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"regexp"
+	"webui/pkg/models/mock"
 	"testing"
 	"time"
-	"webui/pkg/models/mock"
 
 	"github.com/golangcollege/sessions"
 )

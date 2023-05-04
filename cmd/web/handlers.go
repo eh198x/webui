@@ -3,7 +3,9 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"webui/pkg/forms"
 	"webui/pkg/models"
@@ -172,6 +174,12 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+
+	wd, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(wd)
 
 	// Use the new render helper.
 	app.render(w, r, "home.page.gtpl", &templateData{

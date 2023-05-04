@@ -14,17 +14,11 @@ import (
 	"webui/pkg/models"
 	"webui/pkg/models/postg"
 
+	"github.com/joho/godotenv"
+
 	"github.com/golangcollege/sessions"
 	_ "github.com/gorilla/mux"
 	_ "github.com/lib/pq"
-)
-
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "web"
-	password = "enigma"
-	dbname   = "test_db"
 )
 
 type Config struct {
@@ -76,16 +70,31 @@ func openDB(dsn string) (*sql.DB, error) {
 
 func main() {
 
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading .env file: %v", err)
+	}
+
+	psqlInfo := os.Getenv("DB_DSN")
+	fmt.Println("psqlInfo:", psqlInfo)
+
+	port := os.Getenv("CMPSRV_PORT")
+	secret := os.Getenv("JWT_SECRET")
+
 	cfg := new(Config)
-	flag.StringVar(&cfg.Addr, "addr", ":4000", "HTTP network address")
-	flag.StringVar(&cfg.secret, "secret", "Eha0+pPcflHbS*+9Pk8qGWhTzbpa@ge", "Secret Key")
+
+	flag.StringVar(&cfg.Addr, "port", port, "HTTP network address")
+	flag.StringVar(&cfg.secret, "secret", secret, "Secret Key")
 	//secret := flag.String("secret", "s6Ndh+pPcflHbS*+9Pk8qGWhTzbpa@ge", "Secret key")
+
 	flag.Parse()
+
+	fmt.Println("port:", port)
+	fmt.Println("cfg.Addr:", cfg.Addr)
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	db, err := openDB(psqlInfo)
 
 	/* not recommended for web apps
@@ -144,6 +153,7 @@ func main() {
 	//infoLog.Printf("Starting server on %s with secret %s", cfg.Addr, cfg.secret)
 	infoLog.Printf("Starting server on %s", cfg.Addr)
 
-	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
+	//err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
+	err = srv.ListenAndServe()
 	errorLog.Fatal(err)
 }

@@ -12,9 +12,9 @@ import (
 const (
 	host     = "localhost"
 	port     = 5432
-	user     = "test_web"
-	password = "enigma"
-	dbname   = "test_snippetbox"
+	user     = "test_webui"
+	password = "webui"
+	dbname   = "webuidb"
 )
 
 func newTestDB(t *testing.T) (*sql.DB, func()) {
